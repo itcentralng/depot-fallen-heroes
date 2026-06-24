@@ -765,7 +765,7 @@
         </div>
 
         <!-- BACK COVER -->
-        <div class="hard">
+        <div>
           <div class="back-cover">
             <div class="rip">&#9760;</div>
             <img src="assets/images/logo.png" alt="Depot Nigerian Army" onerror="this.style.display='none'" />
@@ -821,16 +821,30 @@
         page: 1
       });
 
+      $('.flipbook').bind('start', function(e, pageObj, corner) {
+        var page  = $(this).turn('page');
+        var total = $(this).turn('pages');
+        // Block forward drag on last page
+        if (page >= total && (corner === 'tr' || corner === 'br')) e.preventDefault();
+        // Block backward drag on first page
+        if (page <= 1   && (corner === 'tl' || corner === 'bl')) e.preventDefault();
+      });
+
       $('.flipbook').bind('turning', function(e, page) {
         _dragPageWrapper = null;
+        var total = $(this).turn('pages');
+        if (page < 1 || page > total) e.preventDefault();
       });
       $('.flipbook').bind('turned', function(e, page) {
         updateHint();
       });
 
       document.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') $('.flipbook').turn('next');
-        if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   $('.flipbook').turn('previous');
+        var book   = $('.flipbook');
+        var page   = book.turn('page');
+        var total  = book.turn('pages');
+        if ((e.key === 'ArrowRight' || e.key === 'ArrowDown') && page < total) book.turn('next');
+        if ((e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   && page > 1)     book.turn('previous');
       });
 
       // Remap mouse coordinates from scaled visual space into turn.js logical space
