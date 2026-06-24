@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Depot Nigerian Army — Fallen Heroes Memorial Book</title>
+  <link href="assets/images/logo.png" rel="shortcut icon" type="image/x-icon" onerror="this.href=''" />
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0c1209;
+      color: #f0ead8;
+      font-family: 'Georgia', serif;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .memorial-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.85rem 1.5rem;
+      background: rgba(12, 18, 9, 0.92);
+      border-bottom: 1px solid rgba(166, 124, 62, 0.35);
+      backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 10;
+    }
+    .memorial-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(166, 124, 62, 0.9), transparent);
+    }
+    .memorial-header img {
+      width: 56px; height: 56px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 10px;
+      padding: 4px;
+      border: 1px solid rgba(166, 124, 62, 0.35);
+    }
+    .memorial-title-block { text-align: center; }
+    .memorial-title {
+      font-size: 1.45rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background-image: linear-gradient(-225deg, #dcbc78 0%, #f0ead8 40%, #dcbc78 70%, #f0ead8 100%);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 6s linear infinite;
+    }
+    @keyframes shimmer { to { background-position: 200% center; } }
+    .memorial-sub {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(220, 188, 120, 0.65);
+      margin-top: 3px;
+    }
+
+    /* ── Viewport ── */
+    .flipbook-viewport {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      padding: 1rem 0 1.5rem;
+      background:
+        radial-gradient(ellipse 80% 70% at 50% 50%, #1a2615 0%, #0c1209 70%, #060906 100%);
+    }
+    .container {
+      width: auto !important;
+      height: auto !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      position: static !important;
+    }
+    .flipbook-scale-wrapper {
+      width: 700px;
+      height: 960px;
+      transform-origin: center center;
+      flex-shrink: 0;
+    }
+    .flipbook {
+      position: relative;
+      background: transparent;
+      border-radius: 4px;
+    }
+
+    /* ── Cover ── */
+    .cover-page {
+      width: 700px; height: 960px;
+      background: linear-gradient(160deg, #0c1209 0%, #1e2e18 50%, #0c1209 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1.2rem;
+      border-right: 3px solid rgba(166, 124, 62, 0.55);
+      box-sizing: border-box;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 8px 40px 8px rgba(0,0,0,0.7);
+    }
+    /* Spine */
+    .cover-page::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0; width: 14px;
+      background: linear-gradient(to right, #1a2c14 0%, #0f1e0c 55%, transparent 100%);
+      border-right: 1px solid rgba(166, 124, 62, 0.15);
+      z-index: 1; pointer-events: none;
+    }
+    /* Page stack */
+    .cover-page::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 3px; bottom: 3px; width: 16px;
+      transform: translateX(100%);
+      background: repeating-linear-gradient(
+        to bottom,
+        #1e2e18 0px, #1e2e18 1px,
+        #141e10 1px, #141e10 2px,
+        #253020 2px, #253020 3px,
+        #141e10 3px, #141e10 4px
+      );
+      z-index: 1; pointer-events: none;
+    }
+    .cover-logo {
+      width: 160px; height: 160px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 16px;
+      padding: 10px;
+      border: 2px solid rgba(166, 124, 62, 0.45);
+      box-shadow: 0 0 28px rgba(166, 124, 62, 0.22), 0 0 8px rgba(166, 124, 62, 0.35);
+      filter: drop-shadow(0 0 12px rgba(166, 124, 62, 0.30));
+    }
+    .cover-title {
+      font-size: 2.0rem; font-weight: bold;
+      color: #f0ead8;
+      text-shadow: 0 0 18px rgba(166, 124, 62, 0.35);
+      line-height: 1.35;
+    }
+    .cover-sub {
+      font-size: 0.92rem;
+      color: rgba(220, 188, 120, 0.85);
+      letter-spacing: 0.1em;
+      border-top: 1px solid rgba(166, 124, 62, 0.35);
+      border-bottom: 1px solid rgba(166, 124, 62, 0.35);
+      padding: 0.5rem 2rem;
+    }
+    .cover-count {
+      font-size: 0.82rem;
+      color: rgba(240, 234, 216, 0.60);
+      line-height: 1.6;
+    }
+    .cover-flame {
+      font-size: 2.8rem;
+      animation: flicker 2.5s ease-in-out infinite alternate;
+    }
+    @keyframes flicker {
+      0%   { text-shadow: 0 0 8px #dcbc78, 0 0 20px #a87c3e; opacity: 1; }
+      50%  { text-shadow: 0 0 4px #a87c3e, 0 0 10px #6e5228; opacity: 0.82; }
+      100% { text-shadow: 0 0 14px #dcbc78, 0 0 32px #a87c3e; opacity: 1; }
+    }
+    .cover-open-hint {
+      position: absolute;
+      right: 20px; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 10px;
+      z-index: 20; pointer-events: none;
+      animation: hintFadeIn 1.5s ease 1.2s both;
+    }
+    .cover-open-hint .hint-text {
+      color: rgba(220, 188, 120, 0.80);
+      font-size: 0.60rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+    }
+    .cover-open-hint .hint-arrow {
+      color: rgba(220, 188, 120, 0.85);
+      font-size: 1.3rem;
+      animation: hintArrowBounce 1.6s ease-in-out infinite;
+    }
+    @keyframes hintArrowBounce {
+      0%, 100% { transform: translateX(0);   opacity: 0.65; }
+      50%       { transform: translateX(8px); opacity: 1; }
+    }
+    @keyframes hintFadeIn {
+      from { opacity: 0; transform: translateY(-50%) translateX(-10px); }
+      to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+    }
+    .book-opened .cover-open-hint { display: none; }
+
+    /* ── Intro page ── */
+    .intro-page {
+      width: 700px; height: 960px;
+      background: linear-gradient(170deg, #0c1209 0%, #172413 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 2.5rem 3rem;
+      box-sizing: border-box;
+      text-align: center;
+      gap: 1.3rem;
+      border: 1px solid rgba(166, 124, 62, 0.22);
+      box-shadow: 0 8px 40px 8px rgba(0,0,0,0.7);
+    }
+    .intro-page h2 {
+      color: rgba(220, 188, 120, 0.95);
+      font-size: 1.65rem;
+      margin: 0;
+      letter-spacing: 0.04em;
+    }
+    .intro-page p {
+      color: rgba(240, 234, 216, 0.85);
+      font-size: 1.04rem;
+      line-height: 1.85;
+      margin: 0;
+    }
+    .intro-divider {
+      width: 80%;
+      border: none;
+      border-top: 1px solid rgba(166, 124, 62, 0.35);
+    }
+
+    /* ── Hero page ── */
+    .hero-page {
+      width: 700px; height: 960px;
+      background: linear-gradient(170deg, #0c1209 0%, #172413 60%, #0c1209 100%);
+      display: flex; flex-direction: column;
+      align-items: center;
+      padding: 1rem 1.6rem 0.9rem;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(166, 124, 62, 0.20);
+      box-shadow: 0 8px 40px 8px rgba(0,0,0,0.7);
+    }
+    /* Watermark */
+    .hero-page::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("assets/images/logo.png") center/200px no-repeat;
+      opacity: 0.035;
+      pointer-events: none;
+    }
+    .serial-badge {
+      position: absolute; top: 0.8rem; left: 0.9rem;
+      background: rgba(42, 66, 56, 0.90);
+      color: rgba(220, 188, 120, 0.95);
+      font-size: 0.72rem; font-weight: bold;
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      letter-spacing: 0.06em;
+      border: 1px solid rgba(166, 124, 62, 0.35);
+    }
+    .hero-photo-frame {
+      width: 270px; height: 270px;
+      border-radius: 6px;
+      border: 4px solid rgba(166, 124, 62, 0.70);
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-top: 2rem;
+      box-shadow:
+        0 0 28px rgba(166, 124, 62, 0.28),
+        0 0 8px rgba(166, 124, 62, 0.45),
+        inset 0 0 0 3px #0c1209,
+        inset 0 0 0 6px rgba(166, 124, 62, 0.18);
+    }
+    .hero-photo-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+    }
+    .hero-name {
+      font-size: 1.52rem; font-weight: bold;
+      color: #f0ead8;
+      text-align: center;
+      margin-top: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.25;
+    }
+    .hero-rank-row {
+      display: flex; gap: 1rem; align-items: center;
+      font-size: 0.86rem;
+      color: rgba(220, 188, 120, 0.75);
+      margin-top: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+    .hero-rank-row span { color: rgba(220, 188, 120, 0.95); font-weight: bold; }
+    .gold-line {
+      width: 85%;
+      border: none;
+      border-top: 1px solid rgba(166, 124, 62, 0.40);
+      margin: 1.1rem 0;
+    }
+    .hero-details {
+      width: 100%;
+      font-size: 1.02rem;
+      color: rgba(240, 234, 216, 0.85);
+      line-height: 1.75;
+      text-align: center;
+    }
+    .hero-details .detail-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 0.55rem;
+    }
+    .hero-details .detail-label {
+      color: rgba(220, 188, 120, 0.90);
+      font-weight: bold;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hero-details .detail-value {
+      color: rgba(240, 234, 216, 0.88);
+      word-break: break-word;
+      text-align: center;
+      font-size: 1.04rem;
+    }
+    .tribute {
+      margin-top: auto;
+      padding-top: 0.5rem;
+      font-size: 0.88rem;
+      color: rgba(166, 124, 62, 0.65);
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* ── Back cover ── */
+    .back-cover {
+      width: 700px; height: 960px;
+      background: linear-gradient(160deg, #0c1209 0%, #1e2e18 50%, #0c1209 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1.4rem; padding: 2.5rem;
+      box-sizing: border-box;
+      text-align: center;
+      border-left: 3px solid rgba(166, 124, 62, 0.55);
+      box-shadow: 0 8px 40px 8px rgba(0,0,0,0.7);
+    }
+    .back-cover img {
+      width: 90px; height: 90px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 12px;
+      padding: 6px;
+      opacity: 0.75;
+    }
+    .back-cover p {
+      color: rgba(220, 188, 120, 0.65);
+      font-size: 0.88rem;
+      font-style: italic;
+      line-height: 1.8;
+      max-width: 420px;
+    }
+    .back-cover .rip { font-size: 2rem; opacity: 0.5; }
+  </style>
+</head>
+<body>
+
+  <div class="memorial-header">
+    <img src="assets/images/logo.png" alt="Depot Nigerian Army Logo" onerror="this.style.display='none'" />
+    <div class="memorial-title-block">
+      <div class="memorial-title">Depot Nigerian Army</div>
+      <div class="memorial-sub">Fallen Heroes Memorial Book</div>
+    </div>
+  </div>
+
+  <div class="flipbook-viewport" style="min-height: calc(100vh - 90px);">
+    <div class="container">
+      <div class="flipbook-scale-wrapper">
+      <div class="flipbook">
+
+        <!-- COVER -->
+        <div class="hard">
+          <div class="cover-page">
+            <div class="cover-flame">&#x1F56F;</div>
+            <img class="cover-logo" src="assets/images/logo.png" alt="Depot Nigerian Army" onerror="this.style.display='none'" />
+            <div class="cover-title">
+              Depot Nigerian Army
+            </div>
+            <div class="cover-sub">FALLEN HEROES MEMORIAL BOOK</div>
+            <div class="cover-count">
+              Recruits who made the supreme sacrifice<br>in the service of the nation
+            </div>
+            <div class="cover-open-hint">
+              <span class="hint-text">Open</span>
+              <span class="hint-arrow">&#9654;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- INTRO -->
+        <div>
+          <div class="intro-page">
+            <h2>In Honoured Memory</h2>
+            <hr class="intro-divider" />
+            <p>
+              This memorial book is dedicated to the recruits of the Depot Nigerian Army
+              who paid the ultimate price — brave young men and women who answered the
+              call to serve their nation and gave their lives in the course of training
+              and duty.
+            </p>
+            <p>
+              Their sacrifice shall not be forgotten. Nigeria honours the memory of
+              each hero enshrined in these pages.
+            </p>
+            <hr class="intro-divider" />
+            <p style="color: rgba(220, 188, 120, 0.80); font-style: italic;">
+              &#8220;The greatest tribute we can offer is to remember them, honour their
+              memory, and continue the mission they gave their lives for.&#8221;
+            </p>
+            <hr class="intro-divider" />
+            <p style="color: rgba(220, 188, 120, 0.55); font-size: 0.80rem;">
+              Click the page edges to turn pages, or use the arrow keys.
+            </p>
+          </div>
+        </div>
+
+        <!-- HERO 1: Ishaya Sunday -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 1</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO25 89 2565 REC ISHAYA SUNDAY ADAMAWA STATE  Heart Failure           DOD 26 JULY 25.jpeg" alt="Ishaya Sunday" />
+            </div>
+            <div class="hero-name">Ishaya Sunday</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO25/89/2565</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">Adamawa State</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Heart Failure</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">26 July 2025</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 2: Abubakar Abdulhafeez -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 2</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO25 89 0978 REC ABUBAKAR ABDULHAFEEZ BORNO STATE     Exhaustion              DOD 21 NOV 25.jpeg" alt="Abubakar Abdulhafeez" />
+            </div>
+            <div class="hero-name">Abubakar Abdulhafeez</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO25/89/0978</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">Borno State</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Exhaustion</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">21 November 2025</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 3: Hussaini Mubarak Ulea (no image yet) -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 3</div>
+            <div class="hero-photo-frame" style="display:flex;align-items:center;justify-content:center;background:rgba(42,66,56,0.25);">
+              <span style="font-size:3.5rem;opacity:0.35;">&#128100;</span>
+            </div>
+            <div class="hero-name">Hussaini Mubarak Ulea</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO26/90</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">—</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">—</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">—</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 4: Samson Smile Jude -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 4</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO26 90 2328 REC SAMSON SMILE JUDE TARABA STATE Cardiac Arrest 20  congenital heart Disease                 DOD  29 JAN 26.jpeg" alt="Samson Smile Jude" />
+            </div>
+            <div class="hero-name">Samson Smile Jude</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO26/90/2328</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">Taraba State</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Cardiac Arrest / Congenital Heart Disease</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">29 January 2026</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 5: Hussaini Mubarak -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 5</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO26 90 3870 REC HUSSAINI MUBARAK ADAMAWA STATE Hyperkalemia          DOD 30 JAN 26.jpeg" alt="Hussaini Mubarak" />
+            </div>
+            <div class="hero-name">Hussaini Mubarak</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO26/90/3870</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">Adamawa State</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Hyperkalemia</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">30 January 2026</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 6: Salisu Iliyasu Alaba -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 6</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO26 90 2217 REC SALIHU ILIYASU ALABA FCT             Severe Head Injury self afflicted 20 Encephalopathy      1 FEB 26.jpeg" alt="Salisu Iliyasu Alaba" />
+            </div>
+            <div class="hero-name">Salisu Iliyasu Alaba</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO26/90/2217</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">FCT</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Severe Head Injury / Encephalopathy</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">1 February 2026</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 7: Aaikyor Joseph Sonter -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 7</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO26 90 3357 REC AAIKYOR JOSEPH SONTER BENUE STATE     Acute respiratory shutdown  multiple organ shutdown  possible ARF           DOD 1 FEB 26.jpeg" alt="Aaikyor Joseph Sonter" />
+            </div>
+            <div class="hero-name">Aaikyor Joseph Sonter</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO26/90/3357</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">Benue State</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Acute Respiratory Shutdown / Multiple Organ Failure</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">1 February 2026</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 8: Saakaan Asemaver -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 8</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO26 90 REC SAAKAAM ASEMVER BENUE STATE      Asphyxiation from acute aspiration                DOD 6 FEB 26.jpeg" alt="Saakaan Asemaver" />
+            </div>
+            <div class="hero-name">Saakaan Asemaver</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO26/90</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">Benue State</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Asphyxiation from Acute Aspiration</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">6 February 2026</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 9: Yaasa Ngutor Kingsley -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 9</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO26 90 0364 REC YAASA NGUTOR KINGSLEY BENUE STATE               acute respiratory distress syndrome asphyxiation cardiac arrest           11 FEB 26.jpeg" alt="Yaasa Ngutor Kingsley" />
+            </div>
+            <div class="hero-name">Yaasa Ngutor Kingsley</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO26/90/0364</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">Benue State</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Acute Respiratory Distress Syndrome / Asphyxiation / Cardiac Arrest</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">11 February 2026</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 10: Tali Joy Nanko -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 10</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO26 90 4130F REC TALI JOY NANKO PLATEAU STATE        aspiration pneumonitis 20 chemical poisoning               DOD 13 FEB 26.jpeg" alt="Tali Joy Nanko" />
+            </div>
+            <div class="hero-name">Tali Joy Nanko</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO26/90/4130F</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">Plateau State</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Aspiration Pneumonitis / Chemical Poisoning</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">13 February 2026</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- HERO 11: Okon Emmanuel Asukwo -->
+        <div>
+          <div class="hero-page">
+            <div class="serial-badge">No. 11</div>
+            <div class="hero-photo-frame">
+              <img src="assets/images/DO26 90 4186 REC OKON EMMANUEL ASUKWO AKWA IBOM STATE        Acute kidney injury thrombocytopaenia                                DOD 15 FEB 26.jpeg" alt="Okon Emmanuel Asukwo" />
+            </div>
+            <div class="hero-name">Okon Emmanuel Asukwo</div>
+            <div class="hero-rank-row">
+              <span>RECRUIT</span>&mdash;<span>DO26/90/4186</span>
+            </div>
+            <hr class="gold-line" />
+            <div class="hero-details">
+              <div class="detail-row">
+                <span class="detail-label">State of Origin</span>
+                <span class="detail-value">Akwa Ibom State</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Cause of Death</span>
+                <span class="detail-value">Acute Kidney Injury / Thrombocytopaenia</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Date of Death</span>
+                <span class="detail-value">15 February 2026</span>
+              </div>
+            </div>
+            <div class="tribute">&#x1F56F; Fallen in Service &#x1F56F;</div>
+          </div>
+        </div>
+
+        <!-- BACK COVER -->
+        <div class="hard">
+          <div class="back-cover">
+            <div class="rip">&#9760;</div>
+            <img src="assets/images/logo.png" alt="Depot Nigerian Army" onerror="this.style.display='none'" />
+            <p>
+              These heroes gave their lives in service to the Federal Republic of Nigeria.<br><br>
+              May their souls rest in eternal peace, and may their sacrifice inspire all
+              who wear the uniform to serve with honour, courage, and dedication.
+            </p>
+            <p style="margin-top: 0.5rem; color: rgba(166, 124, 62, 0.45); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;">
+              Depot Nigerian Army &mdash; Fallen Heroes Memorial
+            </p>
+          </div>
+        </div>
+
+      </div><!-- /.flipbook -->
+      </div><!-- /.flipbook-scale-wrapper -->
+    </div><!-- /.container -->
+  </div><!-- /.flipbook-viewport -->
+
+  <script src="assets/turnjs4/extras/jquery.min.1.7.js"></script>
+  <script src="assets/turnjs4/extras/modernizr.2.5.3.min.js"></script>
+  <script src="assets/turnjs4/lib/turn.js"></script>
+  <script>
+    function loadApp() {
+      var scaleWrapper = document.querySelector('.flipbook-scale-wrapper');
+      var BOOK_W = 700, BOOK_H = 960;
+      var _bookScale = 1;
+      var _dragPageWrapper = null;
+
+      function scaleBook() {
+        var vw = window.innerWidth;
+        var vh = window.innerHeight - document.querySelector('.memorial-header').offsetHeight - 32;
+        var scaleX = vw / BOOK_W;
+        var scaleY = vh / BOOK_H;
+        _bookScale = Math.min(scaleX, scaleY, 1);
+        scaleWrapper.style.transform = 'scale(' + _bookScale + ')';
+      }
+
+      function updateHint() {
+        var page  = $('.flipbook').turn('page');
+        if (page > 1) $('.flipbook').addClass('book-opened');
+        else          $('.flipbook').removeClass('book-opened');
+      }
+
+      $('.flipbook').turn({
+        width: BOOK_W,
+        height: BOOK_H,
+        display: 'single',
+        autoCenter: true,
+        gradients: true,
+        acceleration: true,
+        duration: 900,
+        page: 1
+      });
+
+      $('.flipbook').bind('turning', function(e, page) {
+        _dragPageWrapper = null;
+      });
+      $('.flipbook').bind('turned', function(e, page) {
+        updateHint();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') $('.flipbook').turn('next');
+        if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   $('.flipbook').turn('previous');
+      });
+
+      // Remap mouse coordinates from scaled visual space into turn.js logical space
+      (function() {
+        function pageWrapperOf(el, root) {
+          while (el && el !== root) {
+            if (el.classList && el.classList.contains('page-wrapper')) return el;
+            el = el.parentElement;
+          }
+          return null;
+        }
+        function anchorOf(pw) {
+          if (!pw) return null;
+          var r = pw.getBoundingClientRect();
+          return { left: r.left + r.width / 2, top: r.top + r.height / 2 };
+        }
+        function makeRemapHook(orig) {
+          return {
+            props: (orig && orig.props) ? orig.props : [],
+            filter: function(event, native) {
+              if (_bookScale === 1) return event;
+              var anchor = null;
+              if (native.type === 'mousedown' || native.type === 'mousemove') {
+                if (_dragPageWrapper) {
+                  anchor = anchorOf(_dragPageWrapper);
+                } else if (native.target && scaleWrapper.contains(native.target)) {
+                  anchor = anchorOf(pageWrapperOf(native.target, scaleWrapper));
+                }
+                if (native.type === 'mousedown') _dragPageWrapper = pageWrapperOf(native.target, scaleWrapper);
+              } else {
+                anchor = anchorOf(_dragPageWrapper);
+                _dragPageWrapper = null;
+              }
+              if (!anchor) return event;
+              event.pageX = anchor.left + (event.pageX - anchor.left) / _bookScale;
+              event.pageY = anchor.top  + (event.pageY - anchor.top)  / _bookScale;
+              return event;
+            }
+          };
+        }
+        $.each(['mousedown', 'mousemove', 'mouseup'], function(_, type) {
+          $.event.fixHooks[type] = makeRemapHook($.event.fixHooks[type] || $.event.mouseHooks);
+        });
+      }());
+
+      scaleBook();
+      $(window).on('resize', scaleBook);
+    }
+
+    loadApp();
+  </script>
+</body>
+</html>
