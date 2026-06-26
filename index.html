@@ -371,6 +371,15 @@
       max-width: 420px;
     }
     .back-cover .rip { font-size: 2rem; opacity: 0.5; }
+    .kiosk-close {
+      position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(8,12,10,0.60); border: 1px solid rgba(166,124,62,0.28);
+      color: rgba(240,232,218,0.45); cursor: pointer; display: grid; place-items: center;
+      transition: color 0.2s, border-color 0.2s, background 0.2s; z-index: 210;
+    }
+    .kiosk-close svg { width: 18px; height: 18px; }
+    .kiosk-close:hover { color: rgba(240,232,218,0.85); border-color: rgba(166,124,62,0.60); background: rgba(30,12,12,0.70); }
   </style>
 </head>
 <body>
@@ -381,6 +390,9 @@
       <div class="memorial-title">Depot Nigerian Army</div>
       <div class="memorial-sub">Fallen Heroes Memorial Book</div>
     </div>
+    <button class="kiosk-close" onclick="window.close()" title="Close">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
   </div>
 
   <div class="flipbook-viewport" style="min-height: calc(100vh - 90px);">
